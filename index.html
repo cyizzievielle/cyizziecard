@@ -553,6 +553,82 @@
       nav a{ padding: 7px 9px; }
       .brandText{ max-width: 52vw; }
     }
+    /* =========================
+   MOBILE NAV FIX (CLEAN)
+   ========================= */
+
+.navDesk{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.mActions{ display:none; gap:10px; align-items:center; }
+
+.mBtn{
+  width: 44px; height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.86);
+  cursor:pointer;
+  font-weight: 900;
+  font-size: 18px;
+  display:grid;
+  place-items:center;
+  transition: .16s ease;
+}
+.mBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+
+/* drawer */
+.mDrawer{ display:none; }
+.mDrawer.open{ display:block; }
+
+.mBackdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(10px);
+  z-index: 9998;
+}
+
+.mPanel{
+  position: fixed;
+  top: 74px;
+  right: 14px;
+  width: min(320px, calc(100% - 28px));
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(7,10,18,.78);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.30);
+  z-index: 9999;
+}
+
+.mLink{
+  display:block;
+  padding: 12px 12px;
+  border-radius: 14px;
+  font-weight: 950;
+  color: rgba(255,255,255,.88);
+  text-decoration:none;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  margin: 8px 0;
+}
+.mLink.active{
+  border-color: rgba(120,255,190,.22);
+  background: linear-gradient(135deg, rgba(120,255,190,.10), rgba(120,214,255,.06));
+}
+
+/* mobile layout: brand kiri, buttons kanan */
+@media (max-width: 720px){
+  header{
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brandText{ max-width: 58vw; } /* biar ga kepotong parah */
+  .navDesk{ display:none !important; }
+  .mActions{ display:flex; }
+}
+
   </style>
 </head>
 
@@ -570,11 +646,32 @@
         </div>
       </div>
 
-      <nav aria-label="Navigation">
+      <!-- DESKTOP NAV -->
+      <nav class="navDesk" aria-label="Navigation">
         <a href="#top" data-nav="top" class="active">home</a>
         <a href="#social" data-nav="social">social</a>
         <a href="#music" data-nav="music">music</a>
+        <a href="#extras" data-nav="extras">extras</a>
       </nav>
+
+      <!-- MOBILE ACTIONS (KANAN) -->
+      <div class="mActions">
+        <button class="mBtn" id="mMoodBtn" type="button" aria-label="Toggle mode">☾</button>
+        <button class="mBtn" id="mMenuBtn" type="button" aria-label="Open menu">≡</button>
+      </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="mDrawer" id="mDrawer" aria-hidden="true">
+  <div class="mBackdrop" id="mBackdrop"></div>
+  <div class="mPanel" role="dialog" aria-label="Mobile menu">
+    <a class="mLink active" href="#top" data-nav="top">home</a>
+    <a class="mLink" href="#social" data-nav="social">social</a>
+    <a class="mLink" href="#music" data-nav="music">music</a>
+    <a class="mLink" href="#extras" data-nav="extras">extras</a>
+  </div>
+</div>
+
     </header>
 
     <!-- HERO -->
@@ -965,6 +1062,46 @@
       localStorage.setItem("cy_np_collapsed", isC ? "1" : "0");
       npCollapse.textContent = isC ? "+" : "–";
     });
+    // ===== MOBILE MENU =====
+const mDrawer = document.getElementById("mDrawer");
+const mBackdrop = document.getElementById("mBackdrop");
+const mMenuBtn = document.getElementById("mMenuBtn");
+
+function openDrawer(){
+  mDrawer.classList.add("open");
+  mDrawer.setAttribute("aria-hidden", "false");
+}
+function closeDrawer(){
+  mDrawer.classList.remove("open");
+  mDrawer.setAttribute("aria-hidden", "true");
+}
+
+mMenuBtn?.addEventListener("click", () => {
+  mDrawer.classList.contains("open") ? closeDrawer() : openDrawer();
+});
+mBackdrop?.addEventListener("click", closeDrawer);
+
+// close drawer after click link
+document.querySelectorAll(".mPanel .mLink").forEach(a => {
+  a.addEventListener("click", closeDrawer);
+});
+
+// ===== MOBILE MOOD BUTTON (reuse same logic) =====
+const mMoodBtn = document.getElementById("mMoodBtn");
+mMoodBtn?.addEventListener("click", () => {
+  // sama kayak moodBtn kamu
+  const isGreen = document.body.classList.toggle("mood-green");
+  const mode = isGreen ? "green" : "dark";
+  localStorage.setItem("cy_mode", mode);
+  showToast(`mode: ${mode}`);
+});
+
+// ===== ACTIVE NAV (SYNC DESKTOP + MOBILE) =====
+const navAll = Array.from(document.querySelectorAll("[data-nav]"));
+function setActiveAll(id){
+  navAll.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
+}
+
   </script>
 </body>
 </html>
