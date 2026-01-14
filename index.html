@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>cyizzie — userwholovecas</title>
-  <meta name="description" content="cyizzie — hacker soft glow, calm nights, CAS vibe." />
+  <meta name="description" content="cyizzie — soft glow, calm nights, CAS vibe." />
   <meta name="theme-color" content="#070A12" />
 
   <style>
@@ -138,10 +138,14 @@
       letter-spacing: .08em;
       font-size: 11px;
       margin-top: 1px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
 
-    nav{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    nav a{
+    /* desktop nav */
+    nav.navDesk{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    nav.navDesk a{
       font-size: 12px;
       color: var(--muted);
       text-decoration:none;
@@ -150,17 +154,35 @@
       border: 1px solid transparent;
       transition: .16s ease;
     }
-    nav a:hover{
+    nav.navDesk a:hover{
       color: var(--text);
       border-color: rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       transform: translateY(-1px);
     }
-    nav a.active{
+    nav.navDesk a.active{
       color: rgba(255,255,255,.88);
       border-color: rgba(120,255,190,.18);
       background: linear-gradient(135deg, rgba(120,255,190,.08), rgba(120,214,255,.05));
     }
+
+    /* MOBILE ACTIONS */
+    .mActions{ display:none; gap:10px; align-items:center; }
+    .mBtn{
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 18px;
+      display:grid;
+      place-items:center;
+      transition: .16s ease;
+      user-select:none;
+    }
+    .mBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
 
     /* CARDS */
     .card{
@@ -536,7 +558,6 @@
       font-size: 12px;
     }
     .npBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
-
     .now.collapsed .npSub{ display:none; }
 
     footer{
@@ -546,89 +567,171 @@
       font-size: 12px;
     }
 
-    /* MOBILE: keep brand left + buttons right (no burger needed here) */
-    @media (max-width: 720px){
-      header{ border-radius: 18px; }
-      nav{ gap: 6px; }
-      nav a{ padding: 7px 9px; }
-      .brandText{ max-width: 52vw; }
+    /* ===== MOBILE RIGHT DRAWER ===== */
+    .mDrawer{ display:none; }
+    .mDrawer.open{ display:block; }
+
+    .mBackdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(12px);
+      z-index: 9998;
     }
-    /* =========================
-   MOBILE NAV FIX (CLEAN)
-   ========================= */
 
-.navDesk{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-.mActions{ display:none; gap:10px; align-items:center; }
+    .mSheet{
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(420px, 88vw);      /* "setengah" feel */
+      background: rgba(7,10,18,.80);
+      border-left: 1px solid rgba(255,255,255,.10);
+      box-shadow: -40px 0 110px rgba(0,0,0,.55);
+      z-index: 9999;
+      padding: 18px 16px 16px;
+      overflow: auto;
+    }
 
-.mBtn{
-  width: 44px; height: 44px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.86);
-  cursor:pointer;
-  font-weight: 900;
-  font-size: 18px;
-  display:grid;
-  place-items:center;
-  transition: .16s ease;
-}
-.mBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .mClose{
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 900;
+      user-select:none;
+    }
 
-/* drawer */
-.mDrawer{ display:none; }
-.mDrawer.open{ display:block; }
+    .mTop{ padding-top: 10px; }
+    .mDivider{
+      height: 1px;
+      background: rgba(255,255,255,.10);
+      margin: 14px 0;
+    }
 
-.mBackdrop{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  backdrop-filter: blur(10px);
-  z-index: 9998;
-}
+    .mBrandCard{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
 
-.mPanel{
-  position: fixed;
-  top: 74px;
-  right: 14px;
-  width: min(320px, calc(100% - 28px));
-  padding: 12px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(7,10,18,.78);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 30px 80px rgba(0,0,0,.30);
-  z-index: 9999;
-}
+    .mBrandRow{ display:flex; align-items:center; gap: 12px; min-width:0; }
+    .mAvatar{
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      flex: 0 0 auto;
+    }
+    .mAvatar img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-.mLink{
-  display:block;
-  padding: 12px 12px;
-  border-radius: 14px;
-  font-weight: 950;
-  color: rgba(255,255,255,.88);
-  text-decoration:none;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  margin: 8px 0;
-}
-.mLink.active{
-  border-color: rgba(120,255,190,.22);
-  background: linear-gradient(135deg, rgba(120,255,190,.10), rgba(120,214,255,.06));
-}
+    .mBrandText{ min-width:0; }
+    .mTitle{
+      font-weight: 950;
+      font-size: 16px;
+      color: rgba(255,255,255,.92);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      max-width: 52vw;
+    }
+    .mSub{
+      margin-top: 2px;
+      font-size: 12px;
+      color: rgba(255,255,255,.58);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      max-width: 52vw;
+    }
 
-/* mobile layout: brand kiri, buttons kanan */
-@media (max-width: 720px){
-  header{
-    justify-content: space-between;
-    align-items: center;
-  }
+    .mGlobe{
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.86);
+      cursor: pointer;
+      font-size: 18px;
+      user-select:none;
+    }
 
-  .brandText{ max-width: 58vw; } /* biar ga kepotong parah */
-  .navDesk{ display:none !important; }
-  .mActions{ display:flex; }
-}
+    .mNav{ display:grid; gap: 10px; padding: 4px 0 10px; }
+    .mItem{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.88);
+      text-decoration:none;
+      font-weight: 900;
+    }
+    .mItem .mIco{
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      color: rgba(120,255,190,.85);
+      flex: 0 0 auto;
+    }
+    .mItem.active{
+      border-color: rgba(120,255,190,.18);
+      background: linear-gradient(135deg, rgba(120,255,190,.10), rgba(120,214,255,.06));
+    }
 
+    .mBottom{
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      margin-top: 10px;
+    }
+    .mCTA{
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    /* show drawer only on mobile */
+    @media (min-width: 721px){
+      .mDrawer{ display:none !important; }
+    }
+
+    /* mobile layout: brand kiri, buttons kanan */
+    @media (max-width: 720px){
+      header{
+        justify-content: space-between;
+        align-items: center;
+      }
+      .brandText{ max-width: 58vw; }
+      nav.navDesk{ display:none !important; }
+      .mActions{ display:flex; }
+    }
   </style>
 </head>
 
@@ -636,7 +739,6 @@
   <div class="progress" aria-hidden="true"></div>
 
   <div class="wrap">
-
     <header>
       <div class="brand" aria-label="cyizzie">
         <div class="dot" aria-hidden="true"></div>
@@ -654,25 +756,50 @@
         <a href="#extras" data-nav="extras">extras</a>
       </nav>
 
-      <!-- MOBILE ACTIONS (KANAN) -->
-      <div class="mActions">
+      <!-- MOBILE ACTIONS -->
+      <div class="mActions" aria-label="Mobile actions">
         <button class="mBtn" id="mMoodBtn" type="button" aria-label="Toggle mode">☾</button>
         <button class="mBtn" id="mMenuBtn" type="button" aria-label="Open menu">≡</button>
       </div>
-</header>
-
-<!-- MOBILE DRAWER -->
-<div class="mDrawer" id="mDrawer" aria-hidden="true">
-  <div class="mBackdrop" id="mBackdrop"></div>
-  <div class="mPanel" role="dialog" aria-label="Mobile menu">
-    <a class="mLink active" href="#top" data-nav="top">home</a>
-    <a class="mLink" href="#social" data-nav="social">social</a>
-    <a class="mLink" href="#music" data-nav="music">music</a>
-    <a class="mLink" href="#extras" data-nav="extras">extras</a>
-  </div>
-</div>
-
     </header>
+
+    <!-- MOBILE DRAWER (RIGHT SHEET) -->
+    <div class="mDrawer" id="mDrawer" aria-hidden="true">
+      <div class="mBackdrop" id="mBackdrop"></div>
+
+      <aside class="mSheet" role="dialog" aria-modal="true" aria-label="Menu">
+        <button class="mClose" id="mClose" type="button" aria-label="Close menu">✕</button>
+
+        <div class="mTop">
+          <div class="mBrandCard">
+            <div class="mBrandRow">
+              <div class="mAvatar" aria-hidden="true">
+                <img src="pp.jpg" alt="" />
+              </div>
+              <div class="mBrandText">
+                <div class="mTitle">cyizzie</div>
+                <div class="mSub">quiet • terminal glow • CAS</div>
+              </div>
+            </div>
+
+            <button class="mGlobe" id="mGlobeBtn" type="button" aria-label="Website">🌐</button>
+          </div>
+
+          <div class="mDivider"></div>
+        </div>
+
+        <nav class="mNav" aria-label="Mobile navigation">
+          <a class="mItem active" href="#top" data-nav="top"><span class="mIco">⌂</span>Home</a>
+          <a class="mItem" href="#social" data-nav="social"><span class="mIco">☁</span>Social</a>
+          <a class="mItem" href="#music" data-nav="music"><span class="mIco">♪</span>Music</a>
+          <a class="mItem" href="#extras" data-nav="extras"><span class="mIco">⚙</span>Extras</a>
+        </nav>
+
+        <div class="mBottom">
+          <button class="mCTA" type="button" id="mCtaBtn">Join Discord</button>
+        </div>
+      </aside>
+    </div>
 
     <!-- HERO -->
     <section class="card hero" id="top">
@@ -688,7 +815,7 @@
 
         <div style="min-width:0;">
           <h1 class="hero-title">hi, i’m <span class="grad">cyizzie</span> <span style="opacity:.85;">⟡</span></h1>
-          <p class="sub">            
+          <p class="sub">
             calm nights • minimal noise.<br/>
             listening to <b>Cigarettes After Sex</b>.
           </p>
@@ -816,7 +943,8 @@
           <b>guest note</b>
           <p class="tiny" style="margin:0 0 8px;">(saved in browser)</p>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <input id="noteInput" style="flex:1; min-width:220px; padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color: rgba(255,255,255,.86); outline:none;"
+            <input id="noteInput"
+                   style="flex:1; min-width:220px; padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color: rgba(255,255,255,.86); outline:none;"
                    placeholder="leave a tiny note…" />
             <button class="btn" id="saveNoteBtn" type="button">save</button>
             <button class="btn" id="clearNoteBtn" type="button">clear</button>
@@ -881,6 +1009,10 @@
     // ===== EDIT THESE =====
     const EMAIL = "cyizzie@email.com";
     const USERNAME = "cyizzie";
+
+    // ganti kalau mau:
+    const DISCORD_INVITE = "https://discord.gg/";
+    const WEBSITE_URL = "https://cyizzievielle.github.io/cyizzie-portofolio/index.html";
     // ======================
 
     // year + email
@@ -926,23 +1058,28 @@
       }
     });
 
-    // mood (green <-> dark)
+    // ===== MODE (green <-> dark) + sync desktop & mobile button label =====
     const moodBtn = document.getElementById("moodBtn");
-    const savedMood = localStorage.getItem("cy_mode") || "green";
-    if(savedMood === "dark"){
-      document.body.classList.remove("mood-green");
-      moodBtn.textContent = "mode: dark";
-    } else {
-      document.body.classList.add("mood-green");
-      moodBtn.textContent = "mode: green";
+    const mMoodBtn = document.getElementById("mMoodBtn");
+
+    function setMode(mode){
+      const isGreen = mode === "green";
+      document.body.classList.toggle("mood-green", isGreen);
+      localStorage.setItem("cy_mode", mode);
+      if(moodBtn) moodBtn.textContent = `mode: ${mode}`;
+      showToast(`mode: ${mode}`);
     }
 
-    moodBtn.addEventListener("click", () => {
-      const isGreen = document.body.classList.toggle("mood-green");
-      const mode = isGreen ? "green" : "dark";
-      moodBtn.textContent = `mode: ${mode}`;
-      localStorage.setItem("cy_mode", mode);
-      showToast(`mode: ${mode}`);
+    const savedMode = localStorage.getItem("cy_mode") || "green";
+    setMode(savedMode);
+
+    moodBtn?.addEventListener("click", () => {
+      const next = document.body.classList.contains("mood-green") ? "dark" : "green";
+      setMode(next);
+    });
+    mMoodBtn?.addEventListener("click", () => {
+      const next = document.body.classList.contains("mood-green") ? "dark" : "green";
+      setMode(next);
     });
 
     // typewriter (light, minimal)
@@ -1013,19 +1150,23 @@
     updateProgress();
     topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-    // nav highlight (simple)
-    const navLinks = Array.from(document.querySelectorAll("nav a[data-nav]"));
+    // ===== NAV HIGHLIGHT (SYNC DESKTOP + MOBILE) =====
+    const navAll = Array.from(document.querySelectorAll("[data-nav]"));
     const secIds = ["top","social","music","extras"];
     const secEls = secIds.map(id => document.getElementById(id)).filter(Boolean);
 
-    const setActive = (id) => navLinks.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
+    function setActiveAll(id){
+      navAll.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
+    }
+
     const io = new IntersectionObserver((entries) => {
       const visible = entries.filter(e => e.isIntersecting).sort((a,b)=> b.intersectionRatio - a.intersectionRatio);
-      if(visible[0]) setActive(visible[0].target.id);
+      if(visible[0]) setActiveAll(visible[0].target.id);
     }, { threshold: [0.2, 0.35, 0.5] });
     secEls.forEach(el => io.observe(el));
+    setActiveAll("top");
 
-    // now playing
+    // ===== NOW PLAYING =====
     const nowBar = document.getElementById("nowBar");
     const npSub = document.getElementById("npSub");
     const npCollapse = document.getElementById("npCollapse");
@@ -1062,46 +1203,48 @@
       localStorage.setItem("cy_np_collapsed", isC ? "1" : "0");
       npCollapse.textContent = isC ? "+" : "–";
     });
-    // ===== MOBILE MENU =====
-const mDrawer = document.getElementById("mDrawer");
-const mBackdrop = document.getElementById("mBackdrop");
-const mMenuBtn = document.getElementById("mMenuBtn");
 
-function openDrawer(){
-  mDrawer.classList.add("open");
-  mDrawer.setAttribute("aria-hidden", "false");
-}
-function closeDrawer(){
-  mDrawer.classList.remove("open");
-  mDrawer.setAttribute("aria-hidden", "true");
-}
+    // ===== MOBILE RIGHT DRAWER (SINGLE) =====
+    const mDrawerEl = document.getElementById("mDrawer");
+    const mBackdropEl = document.getElementById("mBackdrop");
+    const mCloseEl = document.getElementById("mClose");
+    const mMenuBtnEl = document.getElementById("mMenuBtn");
 
-mMenuBtn?.addEventListener("click", () => {
-  mDrawer.classList.contains("open") ? closeDrawer() : openDrawer();
-});
-mBackdrop?.addEventListener("click", closeDrawer);
+    function openDrawer(){
+      if(!mDrawerEl) return;
+      mDrawerEl.classList.add("open");
+      mDrawerEl.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer(){
+      if(!mDrawerEl) return;
+      mDrawerEl.classList.remove("open");
+      mDrawerEl.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
 
-// close drawer after click link
-document.querySelectorAll(".mPanel .mLink").forEach(a => {
-  a.addEventListener("click", closeDrawer);
-});
+    mMenuBtnEl?.addEventListener("click", () => {
+      mDrawerEl?.classList.contains("open") ? closeDrawer() : openDrawer();
+    });
+    mBackdropEl?.addEventListener("click", closeDrawer);
+    mCloseEl?.addEventListener("click", closeDrawer);
 
-// ===== MOBILE MOOD BUTTON (reuse same logic) =====
-const mMoodBtn = document.getElementById("mMoodBtn");
-mMoodBtn?.addEventListener("click", () => {
-  // sama kayak moodBtn kamu
-  const isGreen = document.body.classList.toggle("mood-green");
-  const mode = isGreen ? "green" : "dark";
-  localStorage.setItem("cy_mode", mode);
-  showToast(`mode: ${mode}`);
-});
+    document.querySelectorAll(".mSheet a").forEach(a => {
+      a.addEventListener("click", closeDrawer);
+    });
 
-// ===== ACTIVE NAV (SYNC DESKTOP + MOBILE) =====
-const navAll = Array.from(document.querySelectorAll("[data-nav]"));
-function setActiveAll(id){
-  navAll.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
-}
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && mDrawerEl?.classList.contains("open")) closeDrawer();
+    });
 
+    document.getElementById("mCtaBtn")?.addEventListener("click", () => {
+      closeDrawer();
+      window.open(DISCORD_INVITE, "_blank", "noopener");
+    });
+
+    document.getElementById("mGlobeBtn")?.addEventListener("click", () => {
+      window.open(WEBSITE_URL, "_blank", "noopener");
+    });
   </script>
 </body>
 </html>
