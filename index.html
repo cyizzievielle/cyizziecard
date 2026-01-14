@@ -4,69 +4,86 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>cyizzie — userwholovecas</title>
-  <meta name="description" content="cyizzie — minimal dark, Cigarettes After Sex vibe." />
+  <meta name="description" content="cyizzie — hacker soft glow, calm nights, CAS vibe." />
   <meta name="theme-color" content="#070A12" />
 
   <style>
     :root{
-      --bg0:#070A12;
-      --bg1:#0B1224;
+      --bg0:#060812;
+      --bg1:#070A12;
+      --bg2:#0A1020;
 
-      --card: rgba(255,255,255,.06);
+      --card: rgba(255,255,255,.05);
       --line: rgba(255,255,255,.10);
-      --text: rgba(255,255,255,.92);
+
+      --text: rgba(255,255,255,.90);
       --muted: rgba(255,255,255,.62);
 
-      --accentA: rgba(255,155,214,.35); /* soft pink */
-      --accentB: rgba(120,214,255,.20); /* icy blue */
+      /* hacker-soft accents */
+      --green: rgba(120,255,190,.55);
+      --cyan: rgba(120,214,255,.35);
+      --pink: rgba(255,155,214,.22);
 
       --radius: 20px;
       --shadow: 0 26px 90px rgba(0,0,0,.55);
 
-      --progress: 0%;
-      --mx: 50%;
-      --my: 20%;
-
       --npHeight: 58px;
+      --progress: 0%;
     }
 
-    body.mood-pink{
-      --accentA: rgba(255,155,214,.52);
-      --accentB: rgba(183,155,255,.22);
+    /* optional tone switch */
+    body.mood-green{
+      --cyan: rgba(120,214,255,.22);
+      --green: rgba(120,255,190,.75);
+      --pink: rgba(255,155,214,.12);
     }
-    body.focus{
-      --accentA: rgba(255,155,214,.18);
-      --accentB: rgba(120,214,255,.10);
-    }
-    body.reduce-motion *{ scroll-behavior: auto !important; }
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       color: var(--text);
       min-height: 100svh;
+
       background:
-        radial-gradient(900px 520px at 10% 10%, var(--accentA), transparent 60%),
-        radial-gradient(900px 520px at 90% 18%, var(--accentB), transparent 60%),
-        linear-gradient(160deg, var(--bg0), var(--bg1));
+        radial-gradient(900px 520px at 12% 10%, rgba(120,255,190,.12), transparent 60%),
+        radial-gradient(900px 520px at 90% 18%, rgba(120,214,255,.10), transparent 60%),
+        radial-gradient(800px 520px at 40% 90%, rgba(255,155,214,.08), transparent 60%),
+        linear-gradient(160deg, var(--bg0), var(--bg1) 40%, var(--bg2));
       overflow-x:hidden;
     }
 
-    /* scroll progress */
+    /* subtle grid + scanline (NO motion) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px),
+        repeating-linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,.015) 1px, transparent 2px, transparent 5px);
+      background-size: 64px 64px, 64px 64px, 100% 6px;
+      opacity: .35;
+      mix-blend-mode: overlay;
+    }
+
     .progress{
       position: fixed;
       top: 0; left: 0;
       width: var(--progress);
       height: 2px;
-      background: linear-gradient(90deg, rgba(255,155,214,.65), rgba(120,214,255,.45));
+      background: linear-gradient(90deg, rgba(120,255,190,.55), rgba(120,214,255,.35), rgba(255,155,214,.22));
       z-index: 999;
       opacity: .85;
       pointer-events:none;
     }
 
     .wrap{
+      position: relative;
+      z-index: 1;
       max-width: 980px;
       margin: 0 auto;
       padding: 18px 14px calc(74px + var(--npHeight));
@@ -85,25 +102,47 @@
       padding: 10px 12px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.08);
-      background: rgba(7,10,18,.62);
+      background: rgba(7,10,18,.66);
       backdrop-filter: blur(14px);
+      box-shadow: 0 18px 70px rgba(0,0,0,.35);
     }
+
     .brand{
       display:flex; align-items:center; gap:10px;
       font-weight: 950;
       letter-spacing:.2px;
       user-select:none;
       white-space:nowrap;
+      min-width: 0;
     }
+
     .dot{
       width: 10px; height: 10px; border-radius: 999px;
-      background: linear-gradient(135deg, rgba(255,155,214,.55), rgba(120,214,255,.35));
-      box-shadow: 0 14px 30px rgba(255,155,214,.10);
+      background: radial-gradient(circle at 30% 30%, rgba(120,255,190,.85), rgba(120,214,255,.30));
+      box-shadow: 0 0 0 6px rgba(120,255,190,.08);
+      flex: 0 0 auto;
+    }
+
+    .brandText{
+      min-width: 0;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 56vw;
+      color: rgba(255,255,255,.86);
+    }
+    .brandText small{
+      display:block;
+      font-weight: 700;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .08em;
+      font-size: 11px;
+      margin-top: 1px;
     }
 
     nav{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
     nav a{
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       text-decoration:none;
       padding: 8px 10px;
@@ -119,8 +158,8 @@
     }
     nav a.active{
       color: rgba(255,255,255,.88);
-      border-color: rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
+      border-color: rgba(120,255,190,.18);
+      background: linear-gradient(135deg, rgba(120,255,190,.08), rgba(120,214,255,.05));
     }
 
     /* CARDS */
@@ -133,31 +172,31 @@
       position:relative;
     }
 
+    /* soft hacker highlight border */
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius: calc(var(--radius) + 2px);
+      background:
+        radial-gradient(600px 240px at 18% 12%, rgba(120,255,190,.12), transparent 55%),
+        radial-gradient(600px 240px at 85% 20%, rgba(120,214,255,.10), transparent 60%),
+        radial-gradient(600px 240px at 50% 85%, rgba(255,155,214,.08), transparent 60%);
+      pointer-events:none;
+      opacity: .85;
+    }
+    .card > *{ position:relative; z-index:1; }
+
     .grad{
-      background: linear-gradient(135deg, rgba(255,155,214,.90), rgba(183,155,255,.85), rgba(120,214,255,.75));
+      background: linear-gradient(90deg, rgba(120,255,190,.95), rgba(120,214,255,.75), rgba(255,155,214,.60));
       -webkit-background-clip:text;
       background-clip:text;
       color: transparent;
     }
 
-    /* spotlight glow follows cursor */
-    .spotlight{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background: radial-gradient(700px 260px at var(--mx) var(--my),
-        rgba(255,255,255,.08), transparent 55%);
-      opacity:.85;
-      transition: opacity .2s ease;
-      mix-blend-mode: screen;
-    }
-    body.focus .spotlight{ opacity: .55; }
-
     .hero{
       margin-top: 14px;
       padding: 18px;
-      transform-style: preserve-3d;
-      will-change: transform;
     }
 
     .topline{
@@ -183,8 +222,8 @@
     }
     .pill .live{
       width: 7px; height: 7px; border-radius: 999px;
-      background: rgba(155,255,214,.90);
-      box-shadow: 0 0 0 6px rgba(155,255,214,.10);
+      background: rgba(120,255,190,.90);
+      box-shadow: 0 0 0 6px rgba(120,255,190,.10);
     }
 
     .moodBtn{
@@ -224,32 +263,22 @@
       position:relative;
     }
     .pp img{ width:100%; height:100%; object-fit:cover; transform: scale(1.06); display:block; }
-    .pp::after{
-      content:"";
-      position:absolute;
-      inset:-3px;
-      border-radius:999px;
-      background: linear-gradient(135deg, rgba(255,155,214,.35), rgba(120,214,255,.18));
-      filter: blur(12px);
-      opacity:.55;
-      z-index:-1;
-    }
 
     .hero-title{
       margin: 4px 0 8px;
-      font-size: 44px;
+      font-size: 42px;
       line-height: 1.05;
       letter-spacing:.2px;
       font-weight: 980;
     }
-    @media (max-width: 420px){ .hero-title{ font-size: 38px; } }
+    @media (max-width: 420px){ .hero-title{ font-size: 36px; } }
 
     .sub{
       margin:0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.65;
-      max-width: 70ch;
+      max-width: 72ch;
     }
 
     .statusline{
@@ -272,7 +301,7 @@
       width: 8px;
       height: 12px;
       margin-left: 2px;
-      background: rgba(255,255,255,.55);
+      background: rgba(120,255,190,.65);
       border-radius: 2px;
       transform: translateY(2px);
       animation: blink 1s infinite;
@@ -304,28 +333,14 @@
     }
     .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
     .btn.primary{
-      border-color: rgba(255,155,214,.22);
-      background: linear-gradient(135deg, rgba(255,155,214,.16), rgba(120,214,255,.10));
+      border-color: rgba(120,255,190,.22);
+      background: linear-gradient(135deg, rgba(120,255,190,.12), rgba(120,214,255,.08));
     }
     .btn:active{ transform: translateY(0px) scale(.98); }
 
-    /* ripple */
-    .ripple{
-      position:absolute;
-      border-radius:999px;
-      transform: translate(-50%, -50%);
-      pointer-events:none;
-      background: rgba(255,255,255,.18);
-      animation: ripple .6s ease forwards;
-    }
-    @keyframes ripple{
-      from{ width: 0; height: 0; opacity: .7; }
-      to{ width: 340px; height: 340px; opacity: 0; }
-    }
-
     .tiny{ font-size: 12px; color: var(--muted); }
 
-    /* content grid inside the big card */
+    /* content grid */
     .content{
       margin-top: 14px;
       display:grid;
@@ -365,46 +380,7 @@
       line-height: 1.7;
     }
 
-    /* LINKS + SEARCH */
-    .links{
-      display:grid;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .link{
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      text-decoration:none;
-      color: rgba(255,255,255,.86);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      transition:.16s ease;
-    }
-    .link:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
-    .link span{ color: var(--muted); font-size: 12px; }
-
-    .search{
-      margin-top: 10px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .search input{
-      width: min(420px, 100%);
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.86);
-      outline: none;
-    }
-    .search input::placeholder{ color: rgba(255,255,255,.35); }
-
-    /* SOCIAL ICON GRID */
+    /* icon grid */
     .iconGrid{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
@@ -433,37 +409,18 @@
       width: 38px; height: 38px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(135deg, rgba(255,155,214,.16), rgba(120,214,255,.10));
+      background: linear-gradient(135deg, rgba(120,255,190,.10), rgba(120,214,255,.08));
       display:grid; place-items:center;
       flex: 0 0 auto;
     }
     .appName{ font-weight: 950; font-size: 13px; }
     .appHint{ font-size: 12px; color: var(--muted); white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 22ch; }
-    .arrow{ color: rgba(255,255,255,.55); font-weight: 900; }
+    .arrow{ color: rgba(120,255,190,.55); font-weight: 900; }
     svg{ display:block; }
     .ico{ width: 18px; height: 18px; opacity: .95; }
 
     /* music embeds */
     iframe{ width:100%; border:none; border-radius: 14px; height: 80px; }
-
-    /* sparkles */
-    .sparkle{
-      position: fixed;
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      pointer-events:none;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.70), rgba(255,255,255,0) 60%);
-      mix-blend-mode: screen;
-      opacity: 0;
-      transform: translate(-50%,-50%) scale(.7);
-      animation: pop 650ms ease forwards;
-      z-index: 50;
-    }
-    @keyframes pop{
-      0%{ opacity: 0; transform: translate(-50%,-50%) scale(.4); }
-      20%{ opacity: .65; }
-      100%{ opacity: 0; transform: translate(-50%,-62%) scale(1.15); }
-    }
 
     /* toast */
     .toast{
@@ -474,7 +431,7 @@
       padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,18,.75);
+      background: rgba(7,10,18,.80);
       backdrop-filter: blur(14px);
       color: rgba(255,255,255,.85);
       font-size: 12px;
@@ -494,7 +451,7 @@
       padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,18,.70);
+      background: rgba(7,10,18,.72);
       backdrop-filter: blur(14px);
       color: rgba(255,255,255,.85);
       font-weight: 900;
@@ -506,7 +463,7 @@
     }
     .topbtn.show{ opacity: 1; transform: translateY(0); }
 
-    /* NOW PLAYING BAR (sticky) */
+    /* NOW PLAYING BAR */
     .now{
       position: fixed;
       left: 50%;
@@ -523,7 +480,7 @@
       padding: 10px 12px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(7,10,18,.62);
+      background: rgba(7,10,18,.66);
       backdrop-filter: blur(16px);
       box-shadow: 0 18px 60px rgba(0,0,0,.35);
     }
@@ -537,7 +494,7 @@
       width: 32px; height: 32px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.12);
-      background: radial-gradient(circle at 30% 30%, rgba(255,155,214,.18), rgba(120,214,255,.10));
+      background: radial-gradient(circle at 30% 30%, rgba(120,255,190,.14), rgba(120,214,255,.08));
       position:relative;
       overflow:hidden;
       flex: 0 0 auto;
@@ -545,15 +502,18 @@
     .disc:after{
       content:"";
       position:absolute; inset:-20px;
-      background: conic-gradient(from 0deg, rgba(255,155,214,.22), rgba(120,214,255,.14), rgba(255,155,214,.22));
-      animation: spin 6s linear infinite;
-      opacity:.8;
+      background: conic-gradient(from 0deg, rgba(120,255,190,.20), rgba(120,214,255,.12), rgba(120,255,190,.20));
+      opacity:.65;
     }
-    body.reduce-motion .disc:after{ animation:none; }
-    @keyframes spin{ to{ transform: rotate(360deg);} }
 
     .npText{ min-width:0; }
-    .npTitle{ font-size: 12px; color: rgba(255,255,255,.80); font-weight: 900; }
+    .npTitle{
+      font-size: 12px;
+      color: rgba(255,255,255,.82);
+      font-weight: 950;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
     .npSub{
       font-size: 12px;
       color: var(--muted);
@@ -578,36 +538,51 @@
     .npBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
 
     .now.collapsed .npSub{ display:none; }
-    .now.collapsed{ --npHeight: 58px; }
+
     footer{
       margin-top: 14px;
       text-align:center;
       color: rgba(255,255,255,.45);
       font-size: 12px;
     }
+
+    /* MOBILE: keep brand left + buttons right (no burger needed here) */
+    @media (max-width: 720px){
+      header{ border-radius: 18px; }
+      nav{ gap: 6px; }
+      nav a{ padding: 7px 9px; }
+      .brandText{ max-width: 52vw; }
+    }
   </style>
 </head>
 
-<body>
+<body class="mood-green">
   <div class="progress" aria-hidden="true"></div>
 
   <div class="wrap">
+
     <header>
-      <div class="brand"><span class="dot"></span> cyizzie</div>
-      <nav>
-        <a href="#links" data-nav="links">links</a>
+      <div class="brand" aria-label="cyizzie">
+        <div class="dot" aria-hidden="true"></div>
+        <div class="brandText">
+          cyizzie — userwholovecas
+          <small>quiet • terminal glow • CAS</small>
+        </div>
+      </div>
+
+      <nav aria-label="Navigation">
+        <a href="#top" data-nav="top" class="active">home</a>
         <a href="#social" data-nav="social">social</a>
         <a href="#music" data-nav="music">music</a>
+        <a href="#extras" data-nav="extras">extras</a>
       </nav>
     </header>
 
     <!-- HERO -->
     <section class="card hero" id="top">
-      <div class="spotlight" aria-hidden="true"></div>
-
       <div class="topline">
         <div class="pill"><span class="live"></span> midnight</div>
-        <button class="moodBtn" id="moodBtn" type="button">mood: dark</button>
+        <button class="moodBtn" id="moodBtn" type="button">mode: green</button>
       </div>
 
       <div class="profile">
@@ -616,18 +591,16 @@
         </div>
 
         <div style="min-width:0;">
-          <h1 class="hero-title">hi, i’m <span class="grad">cyizzie</span> 🌙</h1>
-          <p class="sub">
-            minimal dark • calm nights • soft glow.<br/>
+          <h1 class="hero-title">hi, i’m <span class="grad">cyizzie</span> <span style="opacity:.85;">⟡</span></h1>
+          <p class="sub">            
+            calm nights • minimal noise.<br/>
             listening to <b>Cigarettes After Sex</b>.
           </p>
 
           <div class="statusline">
             <div class="status"><span id="typeText"></span><span class="cursor"></span></div>
-            <div class="status">click anywhere for ✨</div>
+            <div class="status">press: <b>copy</b> / <b>share</b></div>
             <div class="status" id="clock">00:00</div>
-            <div class="status">local views: <b id="localViews">0</b></div>
-            <div class="status">global views: <b id="globalViews">—</b></div>
           </div>
 
           <div class="actions">
@@ -636,12 +609,6 @@
             <button class="btn" id="copyUserBtn" type="button">🧸 copy username</button>
             <button class="btn" id="shareBtn" type="button">↗ share</button>
             <span class="tiny">email: <span id="emailText">cyizzie@email.com</span></span>
-          </div>
-
-          <div class="actions" style="margin-top:10px;">
-            <button class="moodBtn" id="motionBtn" type="button">motion: on</button>
-            <button class="moodBtn" id="focusBtn" type="button">focus: off</button>
-            <button class="moodBtn" id="globalBtn" type="button">global counter: on</button>
           </div>
         </div>
       </div>
@@ -659,9 +626,7 @@
 
         <div class="mini">
           <b>favorites (CAS)</b>
-          <p>keep on loving you • each time you fall in love • touch • sunsetz • apocalypse • sweet • heavenly • opera house • cry •
-            pistol • nothing’s gonna hurt you baby • you’re the only good thing in my life • falling in love •
-            (playlist mode: low volume, repeat, midnight only)</p>
+          <p>keep on loving you • each time you fall in love • touch • sunsetz • apocalypse • sweet • heavenly</p>
         </div>
 
         <div class="mini">
@@ -676,12 +641,10 @@
 
         <div class="mini">
           <b>hobbies</b>
-          <p>kempo training (discipline + focus) • listening to music when I need a soft reset • scrolling TikTok for tiny moods and
-    cute edits • watching K-dramas when I want something slow and comforting • anime sometimes, when the vibe feels right •
-    and I really love reading manhwa — especially the kind that keeps me up at night “just one more chapter”.</p>
+          <p>kempo training • music • k-dramas • anime • manhwa (one more chapter…)</p>
         </div>
 
-        <!-- SOCIAL ICONS -->
+        <!-- SOCIAL -->
         <div class="mini" id="social">
           <b>social (icons)</b>
           <div class="iconGrid">
@@ -734,7 +697,7 @@
               <div class="arrow">↗</div>
             </a>
 
-            <a class="app" href="https://bit.ly/cyizzieportofolio" target="_blank" rel="noreferrer">
+            <a class="app" href="https://cyizzievielle.github.io/cyizzie-portofolio/index.html" target="_blank" rel="noreferrer">
               <div class="appLeft">
                 <div class="icon">
                   <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -756,9 +719,10 @@
         <!-- EXTRAS -->
         <div class="mini" id="extras">
           <b>guest note</b>
-          <p class="tiny" style="margin:0 0 8px;">(disimpan di browser)</p>
+          <p class="tiny" style="margin:0 0 8px;">(saved in browser)</p>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <input id="noteInput" class="search" style="flex:1; min-width:220px;" placeholder="leave a tiny note…" />
+            <input id="noteInput" style="flex:1; min-width:220px; padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); color: rgba(255,255,255,.86); outline:none;"
+                   placeholder="leave a tiny note…" />
             <button class="btn" id="saveNoteBtn" type="button">save</button>
             <button class="btn" id="clearNoteBtn" type="button">clear</button>
           </div>
@@ -771,7 +735,7 @@
         <div class="mini" id="contact">
           <b>contact</b>
           <p><span id="emailText2">cyizzie@email.com</span></p>
-          <p class="tiny" style="margin-top:8px;">tip: klik “copy email” biar cepat.</p>
+          <p class="tiny" style="margin-top:8px;">tip: click “copy email”.</p>
         </div>
       </div>
     </section>
@@ -819,15 +783,10 @@
   </div>
 
   <script>
-    // ====== EDIT THESE ======
+    // ===== EDIT THESE =====
     const EMAIL = "cyizzie@email.com";
     const USERNAME = "cyizzie";
-
-    // GLOBAL COUNTER (optional). Change key to anything unique.
-    // Works only if your website is online (still works on localhost sometimes, but best online).
-    const ENABLE_GLOBAL_COUNTER_DEFAULT = true;
-    const COUNTER_KEY = "cyizzie-midnight-views-001";
-    // ========================
+    // ======================
 
     // year + email
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -846,75 +805,55 @@
 
     // copy email
     document.getElementById("copyBtn")?.addEventListener("click", async () => {
-      try{ await navigator.clipboard.writeText(EMAIL); showToast("copied ✨"); }
+      try{ await navigator.clipboard.writeText(EMAIL); showToast("copied ✓"); }
       catch(e){ showToast("copy failed"); }
     });
 
     // copy username
     document.getElementById("copyUserBtn")?.addEventListener("click", async () => {
-      try{ await navigator.clipboard.writeText(USERNAME); showToast("username copied 🧸"); }
+      try{ await navigator.clipboard.writeText(USERNAME); showToast("username copied ✓"); }
       catch(e){ showToast("copy failed"); }
     });
 
-    // share (Web Share API)
+    // share
     document.getElementById("shareBtn")?.addEventListener("click", async () => {
       try{
         const url = location.href;
         if(navigator.share){
           await navigator.share({ title: document.title, url });
-          showToast("shared ✨");
+          showToast("shared ✓");
         }else{
           await navigator.clipboard.writeText(url);
-          showToast("link copied");
+          showToast("link copied ✓");
         }
       }catch(e){
         showToast("share canceled");
       }
     });
 
-    // mood switch + save
+    // mood (green <-> dark)
     const moodBtn = document.getElementById("moodBtn");
-    const savedMood = localStorage.getItem("cy_mood") || "dark";
-    if(savedMood === "pink"){ document.body.classList.add("mood-pink"); moodBtn.textContent = "mood: soft pink"; }
-    else moodBtn.textContent = "mood: dark";
+    const savedMood = localStorage.getItem("cy_mode") || "green";
+    if(savedMood === "dark"){
+      document.body.classList.remove("mood-green");
+      moodBtn.textContent = "mode: dark";
+    } else {
+      document.body.classList.add("mood-green");
+      moodBtn.textContent = "mode: green";
+    }
 
     moodBtn.addEventListener("click", () => {
-      document.body.classList.toggle("mood-pink");
-      const on = document.body.classList.contains("mood-pink");
-      moodBtn.textContent = on ? "mood: soft pink" : "mood: dark";
-      localStorage.setItem("cy_mood", on ? "pink" : "dark");
-      showToast(on ? "soft pink on" : "dark on");
+      const isGreen = document.body.classList.toggle("mood-green");
+      const mode = isGreen ? "green" : "dark";
+      moodBtn.textContent = `mode: ${mode}`;
+      localStorage.setItem("cy_mode", mode);
+      showToast(`mode: ${mode}`);
     });
 
-    // reduce motion toggle + save
-    const motionBtn = document.getElementById("motionBtn");
-    const savedMotion = localStorage.getItem("cy_motion") || "on";
-    if(savedMotion === "off"){ document.body.classList.add("reduce-motion"); motionBtn.textContent = "motion: off"; }
-    motionBtn.addEventListener("click", () => {
-      document.body.classList.toggle("reduce-motion");
-      const off = document.body.classList.contains("reduce-motion");
-      motionBtn.textContent = off ? "motion: off" : "motion: on";
-      localStorage.setItem("cy_motion", off ? "off" : "on");
-      showToast(off ? "motion off" : "motion on");
-    });
-
-    // focus mode toggle + save
-    const focusBtn = document.getElementById("focusBtn");
-    const savedFocus = localStorage.getItem("cy_focus") || "off";
-    if(savedFocus === "on"){ document.body.classList.add("focus"); focusBtn.textContent = "focus: on"; }
-    focusBtn.addEventListener("click", () => {
-      document.body.classList.toggle("focus");
-      const on = document.body.classList.contains("focus");
-      focusBtn.textContent = on ? "focus: on" : "focus: off";
-      localStorage.setItem("cy_focus", on ? "on" : "off");
-      showToast(on ? "focus on" : "focus off");
-    });
-
-    // typewriter
-    const lines = ["mostly quiet.", "always listening.", "soft nights.", "stay gentle."];
+    // typewriter (light, minimal)
+    const lines = ["quiet logs.", "soft terminal glow.", "midnight loop.", "stay gentle."];
     const typeEl = document.getElementById("typeText");
     let li = 0, ci = 0, deleting = false;
-
     function tick(){
       const current = lines[li];
       if(!deleting){
@@ -936,71 +875,6 @@
     }
     tick();
 
-    // ripple on buttons
-    document.querySelectorAll(".btn, .moodBtn, .npBtn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const r = document.createElement("span");
-        r.className = "ripple";
-        const rect = btn.getBoundingClientRect();
-        r.style.left = (e.clientX - rect.left) + "px";
-        r.style.top  = (e.clientY - rect.top) + "px";
-        btn.appendChild(r);
-        setTimeout(()=> r.remove(), 650);
-      });
-    });
-
-    // sparkles
-    const makeSparkle = (x,y) => {
-      const s = document.createElement("div");
-      s.className = "sparkle";
-      s.style.left = x + "px";
-      s.style.top = y + "px";
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 680);
-    };
-    window.addEventListener("pointerdown", (e) => {
-      if(document.body.classList.contains("reduce-motion")) return;
-      makeSparkle(e.clientX, e.clientY);
-      for(let i=0;i<2;i++){
-        const dx = (Math.random()*34)-17;
-        const dy = (Math.random()*24)-12;
-        setTimeout(()=> makeSparkle(e.clientX+dx, e.clientY+dy), 40*i);
-      }
-    }, { passive:true });
-
-    // spotlight + tilt
-    const hero = document.querySelector(".hero");
-    const spotlight = document.querySelector(".spotlight");
-
-    function setSpotlight(e){
-      const rect = hero.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      hero.style.setProperty("--mx", x + "%");
-      hero.style.setProperty("--my", y + "%");
-    }
-
-    let raf = null;
-    function tilt(e){
-      if(document.body.classList.contains("reduce-motion")) return;
-      const rect = hero.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width;
-      const py = (e.clientY - rect.top) / rect.height;
-      const rx = (py - 0.5) * -6;
-      const ry = (px - 0.5) * 8;
-      hero.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-1px)`;
-      setSpotlight(e);
-    }
-
-    hero.addEventListener("pointermove", (e) => {
-      if(raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => tilt(e));
-    });
-    hero.addEventListener("pointerleave", () => {
-      hero.style.transform = "none";
-      spotlight.style.opacity = ".75";
-    });
-
     // live clock
     const clockEl = document.getElementById("clock");
     const pad = (n) => String(n).padStart(2, "0");
@@ -1009,38 +883,21 @@
       clockEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }, 1000);
 
-    // link search
-    const linkSearch = document.getElementById("linkSearch");
-    const linkList = document.getElementById("linkList");
-    const linkCount = document.getElementById("linkCount");
-    const linkEls = Array.from(linkList.querySelectorAll(".link"));
-    function updateLinkCount(){
-      const visible = linkEls.filter(a => a.style.display !== "none").length;
-      linkCount.textContent = `${visible}/${linkEls.length}`;
-    }
-    updateLinkCount();
-    linkSearch.addEventListener("input", () => {
-      const q = linkSearch.value.trim().toLowerCase();
-      linkEls.forEach(a => {
-        const name = (a.getAttribute("data-name") || a.textContent).toLowerCase();
-        a.style.display = name.includes(q) ? "" : "none";
-      });
-      updateLinkCount();
-    });
-
     // guest note (localStorage)
     const noteInput = document.getElementById("noteInput");
     const noteSaved = document.getElementById("noteSaved");
     const savedNote = localStorage.getItem("cy_note") || "";
     noteSaved.textContent = savedNote ? savedNote : "—";
+
     document.getElementById("saveNoteBtn").addEventListener("click", () => {
       const v = noteInput.value.trim();
       if(!v){ showToast("empty"); return; }
       localStorage.setItem("cy_note", v);
       noteSaved.textContent = v;
       noteInput.value = "";
-      showToast("saved ✨");
+      showToast("saved ✓");
     });
+
     document.getElementById("clearNoteBtn").addEventListener("click", () => {
       localStorage.removeItem("cy_note");
       noteSaved.textContent = "—";
@@ -1061,60 +918,19 @@
     updateProgress();
     topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-    // nav highlight
+    // nav highlight (simple)
     const navLinks = Array.from(document.querySelectorAll("nav a[data-nav]"));
-    const secIds = ["links","social","gallery","music","extras"];
+    const secIds = ["top","social","music","extras"];
     const secEls = secIds.map(id => document.getElementById(id)).filter(Boolean);
+
     const setActive = (id) => navLinks.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
     const io = new IntersectionObserver((entries) => {
       const visible = entries.filter(e => e.isIntersecting).sort((a,b)=> b.intersectionRatio - a.intersectionRatio);
       if(visible[0]) setActive(visible[0].target.id);
     }, { threshold: [0.2, 0.35, 0.5] });
     secEls.forEach(el => io.observe(el));
-    setActive("links");
 
-    // ===== VIEW COUNTERS =====
-    // 1) local views (per browser)
-    const localViewsEl = document.getElementById("localViews");
-    const localKey = "cy_local_views";
-    const localViews = (parseInt(localStorage.getItem(localKey) || "0", 10) + 1);
-    localStorage.setItem(localKey, String(localViews));
-    localViewsEl.textContent = localViews;
-
-    // 2) global views (optional, uses a free public counter)
-    // Note: This depends on an external service. If you want 100% control, you need backend.
-    const globalViewsEl = document.getElementById("globalViews");
-    const globalBtn = document.getElementById("globalBtn");
-
-    let globalOn = (localStorage.getItem("cy_global") ?? (ENABLE_GLOBAL_COUNTER_DEFAULT ? "on" : "off")) === "on";
-    const syncGlobalBtn = () => globalBtn.textContent = `global counter: ${globalOn ? "on" : "off"}`;
-    syncGlobalBtn();
-
-    globalBtn.addEventListener("click", () => {
-      globalOn = !globalOn;
-      localStorage.setItem("cy_global", globalOn ? "on" : "off");
-      syncGlobalBtn();
-      showToast(globalOn ? "global on" : "global off");
-      if(globalOn) bumpGlobal();
-      else globalViewsEl.textContent = "—";
-    });
-
-    async function bumpGlobal(){
-      try{
-        // CountAPI: simple anonymous counter (public).
-        // If you prefer, you can disable it with the button.
-        const url = `https://api.countapi.xyz/hit/${encodeURIComponent(COUNTER_KEY)}/views`;
-        const res = await fetch(url, { cache: "no-store" });
-        const data = await res.json();
-        if(typeof data?.value === "number") globalViewsEl.textContent = data.value.toLocaleString();
-        else globalViewsEl.textContent = "—";
-      }catch(e){
-        globalViewsEl.textContent = "—";
-      }
-    }
-    if(globalOn) bumpGlobal();
-
-    // ===== NOW PLAYING BAR =====
+    // now playing
     const nowBar = document.getElementById("nowBar");
     const npSub = document.getElementById("npSub");
     const npCollapse = document.getElementById("npCollapse");
@@ -1137,7 +953,7 @@
     npNext.addEventListener("click", () => {
       t++;
       setTrack();
-      showToast("next ♡");
+      showToast("next ✓");
     });
 
     const collapsed = localStorage.getItem("cy_np_collapsed") === "1";
